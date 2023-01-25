@@ -86,27 +86,28 @@ def upload_files():
     # Upload a file to the staging server using the Pterodactyl API
     for root, dirs, files in os.walk("./files/default"):
         for file in files:
-            file_path = os.path.join(root, file)
-            rel_path = os.path.relpath(file_path, "./files/default")
+            rel_path = os.path.relpath(
+                os.path.join(root, file), "./files/default")
             if file.endswith(".zip"):
                 print("Skipping file: " + rel_path)
                 continue
-            print("Uploading file: " + rel_path)
-            file_upload_url = api.client.servers.files.get_upload_file_url(server)
-            file_upload_request = requests.post(
-                file_upload_url,
-                files={'files': open('./files/default/' + rel_path, 'rb')})
-            if file_upload_request.status_code == 200:
-                print("File uploaded: " + file)
             else:
-                print("File upload failed: " + file)
-                print(file_upload_request.text)
+                print("Uploading file: " + rel_path)
+                file_upload_url = api.client.servers.files.get_upload_file_url(
+                    server)
+                file_upload_request = requests.post(
+                    file_upload_url + "&directory=/" + rel_path.replace("\\", "/"),
+                    files={'files': open('./files/default/' + rel_path, 'rb')})
+                if file_upload_request.status_code == 200:
+                    print("File uploaded: " + file)
+                else:
+                    print("File upload failed: " + file)
+                    print(file_upload_request.text)
         for dir in dirs:
-            dir_path = os.path.join(root, dir)
-            rel_path = os.path.relpath(dir_path, "./files/default")
-            print("Creating folder: " + rel_path)
-            api.client.servers.files.create_folder(server, rel_path, os.path.realpath(dir))
-            print("Created folder: " + rel_path)
+            print("Creating directory: " + dir)
+            api.client.servers.files.create_folder(
+                server, dir, "/" + os.path.relpath(os.path.join(root), "./files/default").replace("\\", "/"))
+            print("Directory created: " + dir)
 
 
 def stop_server():

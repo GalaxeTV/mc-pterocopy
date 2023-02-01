@@ -86,28 +86,30 @@ def upload_files():
     # Upload a file to the staging server using the Pterodactyl API
     for root, dirs, files in os.walk("./files/default"):
         for file in files:
-            rel_path = os.path.relpath(
-                os.path.join(root, file), "./files/default")
+            file_path = os.path.join(root, file)
+            rel_file_path = os.path.relpath(file_path, "./files/default")
             if file.endswith(".zip"):
-                print("Skipping file: " + rel_path)
+                print("Skipping file: " + rel_file_path)
                 continue
             else:
-                print("Uploading file: " + rel_path)
+                print("Uploading file: " + rel_file_path)
                 file_upload_url = api.client.servers.files.get_upload_file_url(
                     server)
                 file_upload_request = requests.post(
-                    file_upload_url + "&directory=/" + rel_path.replace("\\", "/"),
-                    files={'files': open('./files/default/' + rel_path, 'rb')})
+                    file_upload_url + "&directory=/" + os.path.dirname(rel_file_path),
+                    files={'files': open('./files/default/' + rel_file_path, 'rb')})
                 if file_upload_request.status_code == 200:
-                    print("File uploaded: " + file)
+                    print("File uploaded: " + rel_file_path)
                 else:
-                    print("File upload failed: " + file)
+                    print("File upload failed: " + rel_file_path)
                     print(file_upload_request.text)
         for dir in dirs:
-            print("Creating directory: " + dir)
+            sub_dir = os.path.join(root, dir)
+            rel_sub_dir = os.path.relpath(sub_dir, "./files/default").replace("\\", "/")
+            print("Creating directory: " + rel_sub_dir)
             api.client.servers.files.create_folder(
-                server, dir, "/" + os.path.relpath(os.path.join(root), "./files/default").replace("\\", "/"))
-            print("Directory created: " + dir)
+                server, rel_sub_dir, "/")
+            print("Directory created: " + rel_sub_dir)
 
 
 def stop_server():

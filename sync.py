@@ -44,9 +44,8 @@ def download_ftp():
     if os.system("which wget") != 0:
         print("wget is not installed! Please install wget to continue.")
         sys.exit(1)
-    os.system(
-        f"wget -r -nH ftp://{production_server}/default -P ./files" +
-        "--user {production_username} --password {production_password}")
+    os.system("wget -r -nH ftp://" + production_server + "/default -P ./files --user " +
+              production_username + " --password " + production_password)
 
 
 def upload_files():

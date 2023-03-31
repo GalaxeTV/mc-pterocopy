@@ -16,11 +16,13 @@ jobs:
         uses: actions/checkout@v3
       - name: Install dependencies
         run: pip install -r requirements.txt
+      - name: Setup credentials
+        run: |
+          touch .env
+          echo "PRODUCTION_SERVER=${{ secrets.PRODUCTION_SERVER }}" >> .env
+          echo "PRODUCTION_USERNAME=${{ secrets.PRODUCTION_USERNAME }}" >> .env
+          echo "PRODUCTION_PASSWORD=${{ secrets.PRODUCTION_PASSWORD }}" >> .env
+          echo "STAGING_SERVER=${{ secrets.STAGING_SERVER }}" >> .env
+          echo "STAGING_API_KEY=${{ secrets.STAGING_API_KEY }}" >> .env
       - name: Deploy
-        env:
-          PRODUCTION_SERVER: ${{ secrets.PRODUCTION_SERVER }}
-          PRODUCTION_USERNAME: ${{ secrets.PRODUCTION_USERNAME }}
-          PRODUCTION_PASSWORD: ${{ secrets.PRODUCTION_PASSWORD }}
-          STAGING_SERVER: ${{ secrets.STAGING_SERVER }}
-          STAGING_API_KEY: ${{ secrets.STAGING_API_KEY }}
         run: python3 sync.py

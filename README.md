@@ -6,17 +6,23 @@ Syncs Minecraft servers with staging and production
 
 * wget (for downloading from the FTP server)
   * This is already installed on most Linux distributions
-* Python 3.6+
+  * On Windows, you can install it with [chocolatey](https://chocolatey.org/) by running `choco install wget`
+* Python 3.8+
 * API Credentials to access the FTP server and the Pterodactyl Panel
   * Specific permissions needed are all files permissions and the ability to stop and start the server
 
 ## How to use
 
 1. Clone repository
-2. `cp .env.example .env`
-3. Modify `.env` to your needs
-4. `pip install -r requirements.txt`
-5. `python3 sync.py`
+2. `cp .env.example .env` to create the `.env` file
+3. Modify `.env` to your specified settings
+4. `pip install -r requirements.txt` to install the required Python dependencies
+5. `python3 sync.py` to run the sync script
+
+The sync script will automatically detect if the server is running or not and will stop it if it is running.
+
+> **Note**
+> Depending on the size of the server, it may take a while to sync.
 
 ## Example configuration
 

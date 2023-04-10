@@ -55,9 +55,6 @@ def upload_files():
         for file in files:
             file_path = os.path.join(root, file)
             rel_file_path = os.path.relpath(file_path, "./files/default")
-            if file.endswith(".zip"):
-                print("Skipping file: " + rel_file_path)
-                continue
             print("Uploading file: " + rel_file_path)
             file_upload_url = api.client.servers.files.get_upload_file_url(
                 server)

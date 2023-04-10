@@ -95,6 +95,32 @@ def start_server():
     api.client.servers.send_power_action(server, "start")
     print("Server started")
 
+def delete_files():
+    """_summary_ Deletes files from the files directory
+    """
+    print("Deleting files on mirrored instance...")
+    # Because pydactyl is terrible with deleting files, we have to do it manually using the API
+    headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + staging_api_key
+    }
+    data = {
+        "root": "/",
+        "files": [""]
+    }
+
+    response = requests.post(staging_server, headers=headers, json=data)
+    print(response.status_code)  # prints the status code of the response
+    print(response.json())  # prints the JSON content of the response
+
+    print("Files deleted")
+
+def cleanup_local_files():
+    """_summary_ Deletes files from the files directory
+    """
+    print("Deleting local files...")
+    os.rmdir("./files")
+    print("Files deleted")
 
 if __name__ == "__main__":
     main()

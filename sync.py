@@ -2,6 +2,7 @@
 """
 
 import os
+import shutil
 import sys
 import time
 import requests
@@ -28,8 +29,10 @@ def main():
     """
     download_ftp()
     stop_server()
+    delete_remote_files()
     upload_files()
     start_server()
+    delete_local_files()
 
 
 def download_ftp():
@@ -92,6 +95,25 @@ def start_server():
     api.client.servers.send_power_action(server, "start")
     print("Server started")
 
+def delete_remote_files():
+    """_summary_ Deletes files from the files directory
+    """
+    print("Deleting files on mirrored instance...")
+    dict_files = api.client.servers.files.list_files(server, "/")
+    file_names = []
+    for file in dict_files["data"]:
+        file_names.append(file["attributes"]["name"])
+
+    api.client.servers.files.delete_files(server, file_names, "/")
+
+    print("Files deleted")
+
+def delete_local_files():
+    """_summary_ Deletes files from the files directory
+    """
+    print("Deleting local files...")
+    shutil.rmtree("./files")
+    print("Local files deleted")
 
 if __name__ == "__main__":
     main()

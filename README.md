@@ -1,4 +1,4 @@
-# mcptero-copy
+# mc-pterocopy
 
 Copies a production Minecraft server to a developer Minecraft serer
 

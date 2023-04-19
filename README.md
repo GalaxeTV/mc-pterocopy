@@ -1,6 +1,6 @@
-# mcserver-ftp-sync
+# mcptero-copy
 
-Syncs Minecraft servers with staging and production
+Copies a production Minecraft server to a developer Minecraft serer
 
 ## Prerequisites
 

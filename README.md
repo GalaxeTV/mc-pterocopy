@@ -1,6 +1,10 @@
 # mc-pterocopy
 
-Copies a production Minecraft server to a developer Minecraft serer
+Copies a production Minecraft server to a developer Minecraft server
+
+> **Note**
+>
+> This is now archived as of 09/18/2023. The script _should_ still work, however there will be no more maintenance done to this project.
 
 ## Prerequisites
 
